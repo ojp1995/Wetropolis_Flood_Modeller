@@ -75,7 +75,7 @@ def create_curve_section(A, depth, centre, radius, angle, Nx, Ny, N_circle):
 
 
 
-def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth):
+def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle):
     '''
     In this function we will produce a matrix of the wetropolis given the coefficients for 
     any given discetisation (X_disc, Y_disc).
@@ -91,25 +91,70 @@ def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth):
 
     # computing the river sections
     # river section 1
-    create_river_section(A, river_depth, coeff['River section 1 x range'], coeff['River section 1 y range'], X_disc, Y_disc)
+    create_river_section(A, river_depth, coeff['River section 1 x range'], 
+                         coeff['River section 1 y range'], X_disc, Y_disc)
     # river section 2
-    create_river_section(A, river_depth, coeff['River section 2 x range'], coeff['River section 2 y range'], X_disc, Y_disc)
+    create_river_section(A, river_depth, coeff['River section 2 x range'], 
+                         coeff['River section 2 y range'], X_disc, Y_disc)
     # river section 3
-    create_river_section(A, river_depth, coeff['River section 3 x range'], coeff['River section 3 y range'], X_disc, Y_disc)
+    create_river_section(A, river_depth, coeff['River section 3 x range'], 
+                         coeff['River section 3 y range'], X_disc, Y_disc)
     # river section 4
-    create_river_section(A, river_depth, coeff['River section 4 x range'], coeff['River section 4 y range'], X_disc, Y_disc)
+    create_river_section(A, river_depth, coeff['River section 4 x range'], 
+                         coeff['River section 4 y range'], X_disc, Y_disc)
     
     # computing the flood plane sections
     # FP section 1
-    create_river_section(A, FP_depth, coeff['FP section 1 x range'], coeff['FP section 1 y range'], X_disc, Y_disc)
+    create_river_section(A, FP_depth, coeff['FP section 1 x range'], 
+                         coeff['FP section 1 y range'], X_disc, Y_disc)
     # FP section 2
-    create_river_section(A, FP_depth, coeff['FP section 2 x range'], coeff['FP section 2 y range'], X_disc, Y_disc)
+    create_river_section(A, FP_depth, coeff['FP section 2 x range'], 
+                         coeff['FP section 2 y range'], X_disc, Y_disc)
     # FP section 3
-    create_river_section(A, FP_depth, coeff['FP section 3 x range'], coeff['FP section 3 y range'], X_disc, Y_disc)
+    create_river_section(A, FP_depth, coeff['FP section 3 x range'], 
+                         coeff['FP section 3 y range'], X_disc, Y_disc)
     # FP section 4
-    create_river_section(A, FP_depth, coeff['FP section 4 x range'], coeff['FP section 4 y range'], X_disc, Y_disc)
+    create_river_section(A, FP_depth, coeff['FP section 4 x range'], 
+                         coeff['FP section 4 y range'], X_disc, Y_disc)
 
 
     # computing the curves
+    # Rivers
+    # curve 1
+    create_curve_section(A, river_depth, coeff['Curve 1 centre'], 
+                         coeff['Curve 1 river radius range'], 
+                         coeff['Curve 1 theta range'], X_disc, 
+                         Y_disc, N_circle)
+    
+    # curve 2
+    create_curve_section(A, river_depth, coeff['Curve 2 centre'], 
+                         coeff['Curve 2 river radius range'], 
+                         coeff['Curve 2 theta range'], X_disc, 
+                         Y_disc, N_circle)
+    
+    # curve 3
+    create_curve_section(A, river_depth, coeff['Curve 3 centre'], 
+                         coeff['Curve 3 river radius range'], 
+                         coeff['Curve 3 theta range'], X_disc, 
+                         Y_disc, N_circle)
+
+    # Flood plains
+    # curve 1
+    create_curve_section(A, FP_depth, coeff['Curve 1 centre'], 
+                         coeff['Curve 1 FP radius range'], 
+                         coeff['Curve 1 theta range'], X_disc, 
+                         Y_disc, N_circle)
+    
+    # curve 2
+    create_curve_section(A, FP_depth, coeff['Curve 2 centre'], 
+                         coeff['Curve 2 FP radius range'], 
+                         coeff['Curve 2 theta range'], X_disc, 
+                         Y_disc, N_circle)
+    
+    # curve 3
+    create_curve_section(A, FP_depth, coeff['Curve 3 centre'], 
+                         coeff['Curve 3 FP radius range'], 
+                         coeff['Curve 3 theta range'], X_disc, 
+                         Y_disc, N_circle)
 
     return A
