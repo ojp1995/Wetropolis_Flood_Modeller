@@ -89,7 +89,7 @@ def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle
     '''
     # initialising matrix
     A = np.zeros((Y_disc, X_disc))
-
+ 
     # computing the river sections
     # river section 1
     create_river_section(A, river_depth, coeff['River section 1 x range'], 
