@@ -33,13 +33,12 @@ def create_river_section(A, depth, x_range, y_range, Nx, Ny):
     Assumptions:
 
     '''
+    x_low, x_up = int( Nx*x_range[0]), int(Nx*x_range[1])
+    y_low, y_up = int( Ny*y_range[0]), int(Ny*y_range[1])
+    for xx in range(x_low, x_up):
+        for yy in range(y_low, y_up):
 
-    for xx in range(x_range):
-        for yy in range(y_range):
-            xj = int(Nx*xx)
-            yj = int(Ny*yy)
-
-            A[yj, xj] = depth
+            A[yy, xx] = depth
 
     return A
 
@@ -68,12 +67,16 @@ def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth):
     create_river_section(A, river_depth, coeff['River section 4 x range'], coeff['River section 4 y range'], X_disc, Y_disc)
     
     # computing the flood plane sections
-    # river section 1
-    create_river_section(A, river_depth, coeff['FP section 1 x range'], coeff['FP section 1 y range'], X_disc, Y_disc)
-    # river section 2
-    create_river_section(A, river_depth, coeff['FP section 2 x range'], coeff['FP section 2 y range'], X_disc, Y_disc)
-    # river section 3
-    create_river_section(A, river_depth, coeff['FP section 3 x range'], coeff['FP section 3 y range'], X_disc, Y_disc)
+    # FP section 1
+    create_river_section(A, FP_depth, coeff['FP section 1 x range'], coeff['FP section 1 y range'], X_disc, Y_disc)
+    # FP section 2
+    create_river_section(A, FP_depth, coeff['FP section 2 x range'], coeff['FP section 2 y range'], X_disc, Y_disc)
+    # FP section 3
+    create_river_section(A, FP_depth, coeff['FP section 3 x range'], coeff['FP section 3 y range'], X_disc, Y_disc)
+    # FP section 4
+    create_river_section(A, FP_depth, coeff['FP section 4 x range'], coeff['FP section 4 y range'], X_disc, Y_disc)
 
 
     # computing the curves
+
+    return A
