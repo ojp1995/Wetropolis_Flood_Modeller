@@ -42,6 +42,39 @@ def create_river_section(A, depth, x_range, y_range, Nx, Ny):
 
     return A
 
+def create_curve_section(A, depth, centre, radius, angle, Nx, Ny, N_circle):
+    '''
+    In this function we will add in the curved sections
+
+    Input:
+
+    Output:
+
+    Assumptions:
+    '''
+
+    # centre of circle:
+    a, b = Nx*centre[0], Ny*centre[1]
+    theta_range = np.linspace( angle[0], angle[1], N_circle )
+    r_range = np.linspace(radius[0], radius[1], N_circle)
+
+    for r in r_range:
+        for theta in theta_range:
+
+            xx = a + Nx*r*np.cos(theta)
+            yy = b + Ny*r*np.sin(theta)
+
+            A[int(np.ceil(yy)), int(np.ceil(xx))] = depth
+            A[int(np.floor(yy)), int(np.floor(xx))] = depth
+            A[int(np.ceil(yy)), int(np.floor(xx))] = depth
+            A[int(np.floor(yy)), int(np.ceil(xx))] = depth 
+
+    return A
+
+
+
+
+
 def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth):
     '''
     In this function we will produce a matrix of the wetropolis given the coefficients for 
