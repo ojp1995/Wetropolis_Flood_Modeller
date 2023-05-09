@@ -75,7 +75,8 @@ def create_curve_section(A, depth, centre, radius, angle, Nx, Ny, N_circle):
 
 
 
-def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle):
+def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle,
+                          slope):
     '''
     In this function we will produce a matrix of the wetropolis given the coefficients for 
     any given discetisation (X_disc, Y_disc).
@@ -157,4 +158,13 @@ def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle
                          coeff['Curve 3 theta range'], X_disc, 
                          Y_disc, N_circle)
 
+
+    # now adding the slope on the whole domain
+
+    basic_slope = np.linspace(0, -slope, Y_disc)
+
+    for count, value in enumerate(basic_slope):
+        A[count, :] = A[count, :] + value  
+
+      
     return A
