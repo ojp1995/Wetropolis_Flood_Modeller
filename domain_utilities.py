@@ -91,8 +91,8 @@ def create_exit_curve(A, coeff, river_depth, N_disc, Nx, Ny):
 
     for xx in x_range:
         for yy in range(int(y_low), int(y_up)):
-            xj = x_pos + int(xx*c_horz)
-            yj = yy + int(-c_vert*np.tan(xx))
+            xj = int(x_pos + xx*c_horz)
+            yj = int(yy + -c_vert*np.tan(xx))
 
             A[yj, xj] = river_depth
 
