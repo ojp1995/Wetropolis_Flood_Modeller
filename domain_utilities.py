@@ -1,5 +1,6 @@
 # functions needed for wetropolis domain
 import numpy as np
+
 def river_section_param_construct(A, depth, x_low, x_up, y_low, y_up, Nx, Ny, X_max, Y_max):
     '''
     In this function we will be editing the domain matrix A in the region between the 
@@ -212,3 +213,44 @@ def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, north_to
 
       
     return A
+
+def matrix_to_ascii(mat, xll, yll, dx, fname, extension):
+    '''
+    This is mainly pseudocode, describing roughly how this is done.
+    In this function we are converting a matrix to an ascii file.
+
+    Attempting to follow guidance from:
+    https://www.loc.gov/preservation/digital/formats/fdd/fdd000422.shtml
+
+    Inputs:
+        mat, the matrix we want to convert
+        xll, the lower left corner x coordinate (should be 0 due to construction of problem)
+        yll, the lower left corner y coordinate (should be 0 due to construction of problem)
+        dx, step size
+        fname, filename for new ascii file
+        extension, always .asc ??
+
+    Outputs:
+        asciifile, the matrix in ascii form! 
+    '''
+    ncols, nrows = np.shape(mat)  # discretisation in y and x direction.
+    temp_file = np.array(np.shape(mat)) # initialising the size
+
+    # temp_file = fname + extension  ## TODO: How do you add an extension to the file name, or is this done at the end???
+
+    # unbsure correct way of adding here
+    # Here we want to write the header
+    header = 'fptr', 'isflt', nrows, ncols, -100, xll, yll, 'dx', 'use_edge_cell', 'format'
+    with open(temp_file, 'w') as file:
+        file.write(header + '\n')
+
+    
+    # Now we want to add the data, work from the top and go down
+    # Now I think we need to read each line of the empty asdii file
+
+    j = 0 # counter for counting down the rows.
+    with open(temp_file, 'w') as file:
+        for line in file:
+            
+            line.write(str(mat[:, nrows-j])) # add line by information from matrix to ascii file
+            j +=1
