@@ -81,8 +81,9 @@ def create_exit_curve(A, coeff, river_depth, N_disc, Nx, Ny):
                     coeff['Exit curve x linspace'][1], N_disc)
     
    
-    y_low = Ny*coeff['Exit curve y range'][0]
-    y_up = Ny*coeff['Exit curve y range'][1]
+    y_low = int(Ny*coeff['Exit curve y range'][0])
+    y_up = int(Ny*coeff['Exit curve y range'][1])
+
 
 
     c_horz = Ny*coeff['Horizontal scaling coeff']/np.max(x_range)
@@ -92,18 +93,21 @@ def create_exit_curve(A, coeff, river_depth, N_disc, Nx, Ny):
     x_pos_max = int(np.floor(Nx*coeff['Exit curve x range'][1]))
 
     for xx in x_range:
-        for yy in range(int(y_low), int(y_up)):
-            # for x_pos in range(x_pos_min, x_pos_max):
-                xj = int(x_pos_min + c_vert*np.tan(xx))
-                yj = int(yy + xx*c_horz)
+        for y_pos in range(y_low, y_up):
+                for x_pos in range(x_pos_min, x_pos_max):
+                    xj = int(x_pos + c_vert*np.tan(xx))
+                    yj = int(y_pos + xx*c_horz)
 
-                A[yj, xj] = river_depth
+                    #     
+                    if xj < Nx:  
+                        A[yj, xj] = river_depth
 
     return A
 
 
-def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle,
-                          N_disc, slope):
+
+def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, north_town_depth, 
+                          south_town_depth, N_circle, N_disc, slope):
     '''
     In this function we will produce a matrix of the wetropolis given the coefficients for 
     any given discetisation (X_disc, Y_disc).
@@ -115,7 +119,7 @@ def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle
 
     '''
     # initialising matrix
-    A = np.zeros((Y_disc, X_disc))
+    A = np.ones((Y_disc, X_disc))
  
     # computing the river sections
     # river section 1
@@ -184,6 +188,15 @@ def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle
                          coeff['Curve 3 FP radius range'], 
                          coeff['Curve 3 theta range'], X_disc, 
                          Y_disc, N_circle)
+    
+    # adding town
+    # north
+    create_river_section(A, north_town_depth, coeff['Town north x range'], 
+                         coeff['Town north y range'], X_disc, Y_disc)
+
+    #south
+    create_river_section(A, south_town_depth, coeff['Town south x range'], 
+                         coeff['Town south y range'], X_disc, Y_disc)
     
     # exit curve
 
