@@ -88,14 +88,16 @@ def create_exit_curve(A, coeff, river_depth, N_disc, Nx, Ny):
     c_horz = Ny*coeff['Horizontal scaling coeff']/np.max(x_range)
     c_vert = Nx*coeff['Vertical shift coeff']/np.tan(np.max(x_range))
 
-    x_pos = Nx*coeff['Exit curve translation'][0] - 1
+    x_pos_min = int(np.floor(Nx*coeff['Exit curve x range'][0]))
+    x_pos_max = int(np.floor(Nx*coeff['Exit curve x range'][1]))
 
     for xx in x_range:
         for yy in range(int(y_low), int(y_up)):
-            xj = int(x_pos + c_vert*np.tan(xx))
-            yj = int(yy + xx*c_horz)
+            # for x_pos in range(x_pos_min, x_pos_max):
+                xj = int(x_pos_min + c_vert*np.tan(xx))
+                yj = int(yy + xx*c_horz)
 
-            A[yj, xj] = river_depth
+                A[yj, xj] = river_depth
 
     return A
 
