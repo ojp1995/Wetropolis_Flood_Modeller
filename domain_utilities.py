@@ -71,12 +71,36 @@ def create_curve_section(A, depth, centre, radius, angle, Nx, Ny, N_circle):
 
     return A
 
+def create_exit_curve(A, coeff, river_depth, N_disc, Nx, Ny):
+    '''
+    In this function we will compute the exit curve and model it as the curve y =-tan(x)
+    for a range of angles x.
+    '''
 
+    x_range = np.linspace(coeff['Exit curve x linspace'][0],
+                    coeff['Exit curve x linspace'][1], N_disc)
+    
+   
+    y_low = Ny*coeff['Exit curve y range'][0]
+    y_up = Ny*coeff['Exit curve y range'][1]
 
+    c_horz = Ny*coeff['Horizontal scaling coeff']/np.max(x_range)
+    c_vert = Nx*coeff['Vertical shift coeff']/np.tan(np.max(x_range))
+
+    x_pos = Nx*coeff['Exit curve translation'][0]
+
+    for xx in x_range:
+        for yy in range(int(y_low), int(y_up)):
+            xj = x_pos + int(xx*c_horz)
+            yj = yy + int(-c_vert*np.tan(xx))
+
+            A[yj, xj] = river_depth
+
+    return A
 
 
 def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle,
-                          slope):
+                          N_disc, slope):
     '''
     In this function we will produce a matrix of the wetropolis given the coefficients for 
     any given discetisation (X_disc, Y_disc).
@@ -157,6 +181,10 @@ def create_wetropolis_DtM(X_disc, Y_disc, coeff, river_depth, FP_depth, N_circle
                          coeff['Curve 3 FP radius range'], 
                          coeff['Curve 3 theta range'], X_disc, 
                          Y_disc, N_circle)
+    
+    # exit curve
+
+    create_exit_curve(A, coeff, river_depth, N_disc, X_disc, Y_disc)
 
 
     # now adding the slope on the whole domain
